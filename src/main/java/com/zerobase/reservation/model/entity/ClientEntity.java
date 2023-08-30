@@ -4,6 +4,7 @@ import com.zerobase.reservation.model.SignUpForm;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * 고객 회원 테이블 entity
@@ -19,24 +20,30 @@ public class ClientEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long c_id;
+    private Long id;
 
     @Column(unique = true)
-    private String c_email;
+    private String email;
 
-    private String c_name;
-    private String c_password;
-    private String c_phone;
+    private String name;
+    private String password;
+    private String phone;
+
+    // 이메일 인증 코드를 위한 필드
+    private LocalDateTime verifyExpiredAt;
+    private String verificationCode;
+    private boolean verify;
+
 
     /**
      * SignUpFrom 타입을 -> ClientEntity 타입으로 변경
      */
     public static ClientEntity change(SignUpForm form) {
         return ClientEntity.builder()
-                .c_email(form.getEmail())
-                .c_name(form.getName())
-                .c_password(form.getPassword())
-                .c_phone(form.getPhone())
+                .email(form.getEmail())
+                .name(form.getName())
+                .password(form.getPassword())
+                .phone(form.getPhone())
                 .build();
     }
 }
